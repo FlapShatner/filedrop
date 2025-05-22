@@ -77,7 +77,7 @@ const FileInput: React.FC<FileInputProps> = ({ onFileSelect }) => {
     accept='*' // Or specify file types e.g., "image/*,.pdf"
    />
    {selectedFile ? (
-    <div className='text-sm text-gray-700'>
+    <div className='text-sm text-text my-auto'>
      <p className='my-1'>Selected file: {selectedFile.name}</p>
      <p className='my-1'>Type: {selectedFile.type}</p>
      <p className='my-1'>Size: {(selectedFile.size / 1024).toFixed(2)} KB</p>
