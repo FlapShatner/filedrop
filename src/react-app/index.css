@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Happy+Monkey&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Happy+Monkey&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
 @import "tailwindcss";
 
 :root {
@@ -9,7 +9,7 @@
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
   background-color: #242424;
-
+  --color-accent: rgba(5, 255, 138, 0.4);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -28,6 +28,7 @@
 @theme {
   --font-monkey: 'Happy Monkey', sans-serif;
   --font-inter: 'Inter', sans-serif;
+  --font-raleway: 'Raleway', sans-serif;
   --color-bg: #242424;
   --color-bg-secondary: #1f1f1f;
   --color-bg-light: #ffffff;
@@ -35,4 +36,5 @@
   --color-text-light: #213547;
   --color-border: #3a3a3a;
   --color-border-light: #e0e0e0;
+  --color-accent: rgba(5, 255, 138, .60);
 }

@@ -1,3 +1,4 @@
+import ExpireIn from './components/expire-in'
 import FileInput from './components/file-input'
 
 function App() {
@@ -6,9 +7,10 @@ function App() {
  }
 
  return (
-  <div className='h-screen flex flex-col items-center justify-center p-4'>
+  <div className='font-monkey h-screen max-w-4xl mx-auto flex flex-col items-center justify-start p-4 pt-8'>
    <h1 className='text-2xl font-monkey mb-8'>Upload a file to share</h1>
-   <div className='w-full max-w-md'>
+   <div className='w-full '>
+    <ExpireIn />
     <FileInput onFileSelect={handleFileSelected} />
    </div>
   </div>
