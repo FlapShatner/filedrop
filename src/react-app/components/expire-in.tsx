@@ -10,7 +10,7 @@ type DurationOptionProps = {
 function DurationOption({ value, label, selected, onChange }: DurationOptionProps) {
  const isSelected = selected === value
  return (
-  <div className={cn('flex items-center justify-center w-18 rounded-md', isSelected && 'bg-accent')}>
+  <div className={cn('flex items-center justify-center w-18 rounded-md cursor-pointer', isSelected && 'bg-accent')}>
    <input
     type='radio'
     id={`duration-${value}`}
@@ -22,7 +22,7 @@ function DurationOption({ value, label, selected, onChange }: DurationOptionProp
    />
    <label
     htmlFor={`duration-${value}`}
-    className={cn('text-text opacity-40 text-sm font-raleway', isSelected && 'font-bold opacity-100')}>
+    className={cn('text-text opacity-40 text-sm font-raleway cursor-pointer', isSelected && 'font-bold opacity-100')}>
     {label}
    </label>
   </div>
