@@ -1,5 +1,7 @@
 Todo:
 
+- option for delete after download
+- scroll down for information
 - style for mobile
 - show file preview on both screens
 - show option to show/hide preview
