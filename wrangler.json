@@ -21,6 +21,14 @@
       "bucket_name": "filedrop",
       "preview_bucket_name": "fd-dev"
     }
+  ],
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "metadata",
+      "database_id": "1633ff97-57dd-42bb-9649-63d48314b6e1",
+      "migrations_dir": "drizzle/migrations"
+    }
   ]
   /**
    * Smart Placement

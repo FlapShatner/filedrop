@@ -12,6 +12,9 @@ Functions on Server:
 
 - human readable url generator
   - deal with collisions
+(https://aistudio.google.com/prompts/13BV6IdfJi5lqTNLjSWaDqElYP3NKTFdV)
+
+
 - accept API request
 - upload file to R2
 - create data object

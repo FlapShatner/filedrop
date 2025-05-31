@@ -1,0 +1,12 @@
+diff --git a/node_modules/unique-username-generator/dist/data/nouns.js b/node_modules/unique-username-generator/dist/data/nouns.js
+index 3239ca6..e6eb326 100644
+--- a/node_modules/unique-username-generator/dist/data/nouns.js
++++ b/node_modules/unique-username-generator/dist/data/nouns.js
+@@ -7218,7 +7218,6 @@ exports.default = [
+     "purr",
+     "gelatin",
+     "muddle",
+-    "booby",
+     "solid",
+     "cloakroom",
+     "stopwatch",
