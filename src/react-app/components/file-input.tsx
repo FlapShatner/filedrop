@@ -57,14 +57,22 @@ const FileInput: React.FC<FileInputProps> = ({ onFileSelect }) => {
   };
 
   const baseClasses =
-    'flex flex-col items-center justify-start p-8 border-2 border-dashed rounded-lg cursor-pointer transition-colors duration-200 ease-in-out min-h-[200px] text-center max-w-xl mx-auto';
+    'flex flex-col items-center justify-start p-8 border-2 border-dashed rounded-lg cursor-pointer transition-colors duration-200 ease-in-out min-h-[200px] text-center w-full max-w-xl mx-auto';
   const idleClasses =
     'bg-bg-secondary text-gray-700 border-border hover:border-border-light';
   const draggingClasses = 'border-border-light bg-gray-100/10 ';
+  const selectedClasses = 'border-accent bg-accent/10 min-h-[100px]';
 
   return (
     <div
-      className={cn(baseClasses, dragging ? draggingClasses : idleClasses)}
+      className={cn(
+        baseClasses,
+        selectedFile
+          ? selectedClasses
+          : dragging
+          ? draggingClasses
+          : idleClasses
+      )}
       onDragEnter={handleDragEnter}
       onDragLeave={handleDragLeave}
       onDragOver={handleDragOver}
