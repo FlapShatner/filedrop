@@ -9,6 +9,8 @@ export const FileProvider = ({ children }: FileProviderProps) => {
   const [file, setFile] = useState<File | null>(null);
   const [expireIn, setExpireIn] = useState<number>(1);
   const [key, setKey] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleFileSelected = (file: File) => {
     setFile(file);
@@ -16,6 +18,7 @@ export const FileProvider = ({ children }: FileProviderProps) => {
 
   const handleShare = async () => {
     if (!file) return;
+    setIsLoading(true);
     const formData = new FormData();
     formData.append('file', file);
     formData.append('expireIn', expireIn.toString());
@@ -32,13 +35,17 @@ export const FileProvider = ({ children }: FileProviderProps) => {
         setFile(null);
         setExpireIn(1);
         setKey(data.key);
+        setIsLoading(false);
         return data.key;
       } else {
         console.error(data.message);
+        setIsLoading(false);
         return null;
       }
     } catch (error) {
       console.error(error);
+      setIsLoading(false);
+      setError('An error occurred while sharing the file');
       return null;
     }
   };
@@ -54,6 +61,8 @@ export const FileProvider = ({ children }: FileProviderProps) => {
     file,
     expireIn,
     key,
+    isLoading,
+    error,
     setFile,
     setExpireIn,
     handleFileSelected,

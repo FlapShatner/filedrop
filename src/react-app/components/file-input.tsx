@@ -6,7 +6,7 @@ import FolderIcon from './icons/folder-icon';
 import { useFileContext } from '../context/file-context';
 
 const FileInput: React.FC = () => {
-  const { handleFileSelected, file } = useFileContext();
+  const { handleFileSelected, file, isLoading } = useFileContext();
   const [dragging, setDragging] = useState(false);
 
   // Reset file input when file is cleared
@@ -95,7 +95,9 @@ const FileInput: React.FC = () => {
       <ClearFile />
       {file ?
         <div className="text-sm text-text my-auto ">
-          <p className="my-1">Selected file: {file.name}</p>
+          <p className="my-1">
+            {isLoading ? 'Uploading file:' : 'Selected file:'} {file.name}
+          </p>
           <p className="my-1">Type: {file.type}</p>
           <p className="my-1">Size: {(file.size / 1024).toFixed(2)} KB</p>
         </div>

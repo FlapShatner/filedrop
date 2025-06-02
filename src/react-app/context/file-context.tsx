@@ -4,10 +4,12 @@ export interface FileContextType {
   file: File | null;
   expireIn: number;
   key: string | null;
+  isLoading: boolean;
+  error: string | null;
   setFile: (file: File | null) => void;
   setExpireIn: (expireIn: number) => void;
   handleFileSelected: (file: File) => void;
-  handleShare: () => void;
+  handleShare: () => Promise<string | null>;
   handleClearFile: () => void;
 }
 
