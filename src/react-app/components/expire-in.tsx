@@ -1,4 +1,7 @@
-import { cn } from '../lib/cn';
+import { cn } from '../../../lib/cn';
+import { DURATIONS } from '../../../constants';
+import { useFileContext } from '../context/file-context';
+
 type DurationOptionProps = {
   value: number;
   label: string;
@@ -42,26 +45,14 @@ function DurationOption({
   );
 }
 
-function ExpireIn({
-  expireIn,
-  setExpireIn,
-}: {
-  expireIn: number;
-  setExpireIn: (value: number) => void;
-}) {
-  const durations = [
-    { value: 1, label: '1 hour' },
-    { value: 3, label: '3 hours' },
-    { value: 6, label: '6 hours' },
-    { value: 12, label: '12 hours' },
-    { value: 24, label: '24 hours' },
-    { value: 72, label: '3 days' },
-  ];
+function ExpireIn() {
+  const { expireIn, setExpireIn } = useFileContext();
+
   return (
     <div className="flex items-center justify-center ">
       <div>Expire In:</div>
       <div className="flex justify-center items-center  ml-4 rounded-lg bg-bg-secondary">
-        {durations.map((duration) => (
+        {DURATIONS.map((duration) => (
           <DurationOption
             key={duration.value}
             value={duration.value}

@@ -1,15 +1,25 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import UploadLoopIcon from './icons/upload-loop-icon';
-import { cn } from '../lib/cn';
+import { cn } from '../../../lib/cn';
+import ClearFile from './clear-file';
 import FolderIcon from './icons/folder-icon';
+import { useFileContext } from '../context/file-context';
 
-interface FileInputProps {
-  onFileSelect: (file: File) => void;
-}
-
-const FileInput: React.FC<FileInputProps> = ({ onFileSelect }) => {
+const FileInput: React.FC = () => {
+  const { handleFileSelected, file } = useFileContext();
   const [dragging, setDragging] = useState(false);
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+
+  // Reset file input when file is cleared
+  useEffect(() => {
+    if (!file) {
+      const fileInput = document.getElementById(
+        'fileInput'
+      ) as HTMLInputElement;
+      if (fileInput) {
+        fileInput.value = '';
+      }
+    }
+  }, [file]);
 
   const handleDragEnter = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -35,20 +45,18 @@ const FileInput: React.FC<FileInputProps> = ({ onFileSelect }) => {
       setDragging(false);
 
       if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-        const file = e.dataTransfer.files[0];
-        setSelectedFile(file);
-        onFileSelect(file);
+        const selectedFile = e.dataTransfer.files[0];
+        handleFileSelected(selectedFile);
         e.dataTransfer.clearData();
       }
     },
-    [onFileSelect]
+    [handleFileSelected]
   );
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
-      const file = e.target.files[0];
-      setSelectedFile(file);
-      onFileSelect(file);
+      const selectedFile = e.target.files[0];
+      handleFileSelected(selectedFile);
     }
   };
 
@@ -57,7 +65,7 @@ const FileInput: React.FC<FileInputProps> = ({ onFileSelect }) => {
   };
 
   const baseClasses =
-    'flex flex-col items-center justify-start p-8 border-2 border-dashed rounded-lg cursor-pointer transition-colors duration-200 ease-in-out min-h-[200px] text-center w-full max-w-xl mx-auto';
+    'flex flex-col items-center justify-start p-8 border-2 border-dashed rounded-lg cursor-pointer transition-colors duration-200 ease-in-out min-h-[200px] text-center w-full max-w-xl mx-auto relative';
   const idleClasses =
     'bg-bg-secondary text-gray-700 border-border hover:border-border-light';
   const draggingClasses = 'border-border-light bg-gray-100/10 ';
@@ -67,11 +75,9 @@ const FileInput: React.FC<FileInputProps> = ({ onFileSelect }) => {
     <div
       className={cn(
         baseClasses,
-        selectedFile
-          ? selectedClasses
-          : dragging
-          ? draggingClasses
-          : idleClasses
+        file ? selectedClasses
+        : dragging ? draggingClasses
+        : idleClasses
       )}
       onDragEnter={handleDragEnter}
       onDragLeave={handleDragLeave}
@@ -86,16 +92,14 @@ const FileInput: React.FC<FileInputProps> = ({ onFileSelect }) => {
         onChange={handleFileChange}
         accept="*"
       />
-      {selectedFile ? (
-        <div className="text-sm text-text my-auto">
-          <p className="my-1">Selected file: {selectedFile.name}</p>
-          <p className="my-1">Type: {selectedFile.type}</p>
-          <p className="my-1">
-            Size: {(selectedFile.size / 1024).toFixed(2)} KB
-          </p>
+      <ClearFile />
+      {file ?
+        <div className="text-sm text-text my-auto ">
+          <p className="my-1">Selected file: {file.name}</p>
+          <p className="my-1">Type: {file.type}</p>
+          <p className="my-1">Size: {(file.size / 1024).toFixed(2)} KB</p>
         </div>
-      ) : (
-        <div
+      : <div
           className={cn(
             'pointer-events-none font-raleway flex flex-col items-center justify-center',
             dragging ? 'text-text ' : 'text-text/70'
@@ -108,7 +112,7 @@ const FileInput: React.FC<FileInputProps> = ({ onFileSelect }) => {
             <FolderIcon className="w-4 h-4" />
           </button>
         </div>
-      )}
+      }
     </div>
   );
 };

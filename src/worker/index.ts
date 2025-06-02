@@ -1,7 +1,7 @@
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import { prettyJSON } from 'hono/pretty-json';
-import { newUsername } from '../utils/username';
+import { newUsername } from '../../lib/username.ts';
 import { drizzle } from 'drizzle-orm/d1';
 import { expiring_files } from './db/schema.ts';
 
@@ -21,6 +21,7 @@ app.post('/api/upload', async (c) => {
   try {
     const formData = await c.req.formData();
     const file = formData.get('file') as File;
+    const expireIn = formData.get('expireIn') as string;
     const key = await newUsername(c.env.DB);
     const result = await c.env.filedrop.put(key, file.stream(), {
       httpMetadata: {
@@ -31,6 +32,7 @@ app.post('/api/upload', async (c) => {
         id: key,
       },
     });
+    console.log(result);
 
     const db = drizzle(c.env.DB);
     const insertResult = await db.insert(expiring_files).values({
@@ -40,11 +42,15 @@ app.post('/api/upload', async (c) => {
       content_type: file.type,
       size_bytes: file.size,
       uploaded_at: Date.now(),
-      expires_at: Date.now() + 1000 * 60 * 60 * 24 * 7, // 1 week
+      expires_at: Date.now() + 1000 * 60 * 60 * 24 * parseInt(expireIn),
     });
     console.log(insertResult);
 
-    return c.json({ message: 'File uploaded successfully', result });
+    return c.json({
+      message: 'File uploaded successfully',
+      result: insertResult,
+      key,
+    });
   } catch (error) {
     return c.json({ message: 'File upload failed', error: error }, 500);
   }

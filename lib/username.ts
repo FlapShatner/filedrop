@@ -1,6 +1,6 @@
 import { generateUsername } from 'unique-username-generator';
 import { drizzle } from 'drizzle-orm/d1';
-import { expiring_files } from '../worker/db/schema';
+import { expiring_files } from '../src/worker/db/schema';
 import { eq } from 'drizzle-orm';
 
 export const newUsername = async (database: D1Database): Promise<string> => {
@@ -8,7 +8,7 @@ export const newUsername = async (database: D1Database): Promise<string> => {
   const db = drizzle(database);
 
   for (let attempt = 1; attempt <= maxAttempts; attempt++) {
-    const username = generateUsername();
+    const username = generateUsername('-');
 
     const existingFile = await db
       .select({ id: expiring_files.id })
