@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { FileContext, FileContextType } from './file-context';
-
+import { InsertResult } from '../../types';
 interface FileProviderProps {
   children: React.ReactNode;
 }
@@ -8,7 +8,7 @@ interface FileProviderProps {
 export const FileProvider = ({ children }: FileProviderProps) => {
   const [file, setFile] = useState<File | null>(null);
   const [expireIn, setExpireIn] = useState<number>(1);
-  const [key, setKey] = useState<string | null>(null);
+  const [result, setResult] = useState<InsertResult | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -34,9 +34,9 @@ export const FileProvider = ({ children }: FileProviderProps) => {
       if (data.result.success) {
         setFile(null);
         setExpireIn(1);
-        setKey(data.key);
+        setResult(data.result);
         setIsLoading(false);
-        return data.key;
+        return data.result;
       } else {
         console.error(data.message);
         setIsLoading(false);
@@ -52,15 +52,13 @@ export const FileProvider = ({ children }: FileProviderProps) => {
 
   const handleClearFile = () => {
     setFile(null);
-    setKey(null);
+    setResult(null);
   };
-
-  console.log(file, expireIn);
 
   const value: FileContextType = {
     file,
     expireIn,
-    key,
+    result,
     isLoading,
     error,
     setFile,

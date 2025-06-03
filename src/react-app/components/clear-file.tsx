@@ -1,6 +1,6 @@
 import { ClearIcon } from './icons/clear-icon';
 import { useFileContext } from '../context/file-context';
-import { cn } from '../../../lib/cn';
+import { cn } from '../../lib/cn';
 
 function ClearFile() {
   const { handleClearFile, file } = useFileContext();

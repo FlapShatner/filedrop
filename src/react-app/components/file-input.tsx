@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import UploadLoopIcon from './icons/upload-loop-icon';
-import { cn } from '../../../lib/cn';
+import { cn } from '../../lib/cn';
 import ClearFile from './clear-file';
 import FolderIcon from './icons/folder-icon';
 import { useFileContext } from '../context/file-context';

@@ -1,9 +1,10 @@
 import { createContext, useContext } from 'react';
+import { InsertResult } from '../../types';
 
 export interface FileContextType {
   file: File | null;
   expireIn: number;
-  key: string | null;
+  result: InsertResult | null;
   isLoading: boolean;
   error: string | null;
   setFile: (file: File | null) => void;

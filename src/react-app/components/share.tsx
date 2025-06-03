@@ -1,14 +1,16 @@
-import { cn } from '../../../lib/cn.ts';
+import { cn } from '../../lib/cn.ts';
 import { useFileContext } from '../context/file-context';
+import { useNavigate } from '@tanstack/react-router';
 import Loader from './icons/loader';
 
 function Share() {
+  const navigate = useNavigate();
   const { handleShare, isLoading } = useFileContext();
 
   const handleClick = async () => {
     const key = await handleShare();
     if (key) {
-      window.location.href = `${window.location.origin}/file/${key}`;
+      navigate({ to: '/share-url' });
     }
   };
 
