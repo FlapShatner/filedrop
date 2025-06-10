@@ -8,9 +8,12 @@ function Share() {
   const { handleShare, isLoading } = useFileContext();
 
   const handleClick = async () => {
-    const key = await handleShare();
-    if (key) {
-      navigate({ to: '/share-url' });
+    const result = await handleShare();
+    const url = result?.insertResult[0].id;
+    console.log('result:', result);
+    console.log('url:', url);
+    if (url) {
+      navigate({ to: `/share-url/$url`, params: { url } });
     }
   };
 

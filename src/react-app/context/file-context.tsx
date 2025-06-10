@@ -1,5 +1,5 @@
 import { createContext, useContext } from 'react';
-import { InsertResult } from '../../types';
+import { InsertResult, ShareResult } from '../../types';
 
 export interface FileContextType {
   file: File | null;
@@ -10,7 +10,7 @@ export interface FileContextType {
   setFile: (file: File | null) => void;
   setExpireIn: (expireIn: number) => void;
   handleFileSelected: (file: File) => void;
-  handleShare: () => Promise<string | null>;
+  handleShare: () => Promise<ShareResult | null>;
   handleClearFile: () => void;
 }
 

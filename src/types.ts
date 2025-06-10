@@ -12,3 +12,8 @@ export type InsertResult = {
   uploaded_at: number;
   expires_at: number;
 };
+
+export type ShareResult = {
+  success: boolean;
+  insertResult: InsertResult[];
+};

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { FileContext, FileContextType } from './file-context';
-import { InsertResult } from '../../types';
+import { InsertResult, ShareResult } from '../../types';
 interface FileProviderProps {
   children: React.ReactNode;
 }
@@ -16,8 +16,8 @@ export const FileProvider = ({ children }: FileProviderProps) => {
     setFile(file);
   };
 
-  const handleShare = async () => {
-    if (!file) return;
+  const handleShare = async (): Promise<ShareResult | null> => {
+    if (!file) return null;
     setIsLoading(true);
     const formData = new FormData();
     formData.append('file', file);

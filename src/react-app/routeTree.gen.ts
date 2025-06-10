@@ -11,20 +11,27 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as ShareUrlImport } from './routes/share-url'
 import { Route as IndexImport } from './routes/index'
+import { Route as ShareUrlUrlImport } from './routes/share-url.$url'
+import { Route as DownloadUrlImport } from './routes/download.$url'
 
 // Create/Update Routes
-
-const ShareUrlRoute = ShareUrlImport.update({
-  id: '/share-url',
-  path: '/share-url',
-  getParentRoute: () => rootRoute,
-} as any)
 
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ShareUrlUrlRoute = ShareUrlUrlImport.update({
+  id: '/share-url/$url',
+  path: '/share-url/$url',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const DownloadUrlRoute = DownloadUrlImport.update({
+  id: '/download/$url',
+  path: '/download/$url',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -39,11 +46,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
-    '/share-url': {
-      id: '/share-url'
-      path: '/share-url'
-      fullPath: '/share-url'
-      preLoaderRoute: typeof ShareUrlImport
+    '/download/$url': {
+      id: '/download/$url'
+      path: '/download/$url'
+      fullPath: '/download/$url'
+      preLoaderRoute: typeof DownloadUrlImport
+      parentRoute: typeof rootRoute
+    }
+    '/share-url/$url': {
+      id: '/share-url/$url'
+      path: '/share-url/$url'
+      fullPath: '/share-url/$url'
+      preLoaderRoute: typeof ShareUrlUrlImport
       parentRoute: typeof rootRoute
     }
   }
@@ -53,37 +67,42 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/share-url': typeof ShareUrlRoute
+  '/download/$url': typeof DownloadUrlRoute
+  '/share-url/$url': typeof ShareUrlUrlRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/share-url': typeof ShareUrlRoute
+  '/download/$url': typeof DownloadUrlRoute
+  '/share-url/$url': typeof ShareUrlUrlRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
-  '/share-url': typeof ShareUrlRoute
+  '/download/$url': typeof DownloadUrlRoute
+  '/share-url/$url': typeof ShareUrlUrlRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/share-url'
+  fullPaths: '/' | '/download/$url' | '/share-url/$url'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/share-url'
-  id: '__root__' | '/' | '/share-url'
+  to: '/' | '/download/$url' | '/share-url/$url'
+  id: '__root__' | '/' | '/download/$url' | '/share-url/$url'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  ShareUrlRoute: typeof ShareUrlRoute
+  DownloadUrlRoute: typeof DownloadUrlRoute
+  ShareUrlUrlRoute: typeof ShareUrlUrlRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  ShareUrlRoute: ShareUrlRoute,
+  DownloadUrlRoute: DownloadUrlRoute,
+  ShareUrlUrlRoute: ShareUrlUrlRoute,
 }
 
 export const routeTree = rootRoute
@@ -97,14 +116,18 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/share-url"
+        "/download/$url",
+        "/share-url/$url"
       ]
     },
     "/": {
       "filePath": "index.tsx"
     },
-    "/share-url": {
-      "filePath": "share-url.tsx"
+    "/download/$url": {
+      "filePath": "download.$url.tsx"
+    },
+    "/share-url/$url": {
+      "filePath": "share-url.$url.tsx"
     }
   }
 }
