@@ -4,6 +4,7 @@ import { prettyJSON } from 'hono/pretty-json';
 import { newUsername } from './username';
 import { drizzle } from 'drizzle-orm/d1';
 import { expiring_files } from './db/schema';
+import { eq } from 'drizzle-orm';
 
 export type DBType = D1Database;
 type Env = {
@@ -45,7 +46,7 @@ app.post('/api/upload', async (c) => {
         content_type: file.type,
         size_bytes: file.size,
         uploaded_at: Date.now(),
-        expires_at: Date.now() + 1000 * 60 * 60 * 24 * parseInt(expireIn),
+        expires_at: Date.now() + 1000 * 60 * 60 * parseInt(expireIn),
       })
       .returning();
     const dbResult = { success: true, insertResult };
@@ -57,6 +58,27 @@ app.post('/api/upload', async (c) => {
     });
   } catch (error) {
     return c.json({ message: 'File upload failed', error: error }, 500);
+  }
+});
+
+app.get('/api/download/:url', async (c) => {
+  const { url } = c.req.param();
+  try {
+    const file = await c.env.filedrop.get(url);
+    if (!file) {
+      return c.json({ message: 'File not found' }, 404);
+    }
+    const db = drizzle(c.env.DB);
+    const fileMeta = await db
+      .select()
+      .from(expiring_files)
+      .where(eq(expiring_files.id, url));
+    if (!fileMeta) {
+      return c.json({ message: 'File not found' }, 404);
+    }
+    return c.json({ file, fileMeta });
+  } catch (error) {
+    return c.json({ message: 'File download failed', error: error }, 500);
   }
 });
 
