@@ -35,7 +35,7 @@ function DurationOption({
       <label
         htmlFor={`duration-${value}`}
         className={cn(
-          'text-text opacity-40 text-sm font-raleway cursor-pointer',
+          'text-text opacity-50 text-sm font-raleway cursor-pointer',
           isSelected && 'font-bold opacity-100'
         )}
       >
@@ -51,7 +51,7 @@ function ExpireIn() {
   return (
     <div className="flex items-center justify-center ">
       <div>Expire In:</div>
-      <div className="flex justify-center items-center  ml-4 rounded-lg bg-bg-secondary">
+      <div className="flex justify-center items-center  ml-4 rounded-lg bg-accent/10 border border-accent">
         {DURATIONS.map((duration) => (
           <DurationOption
             key={duration.value}

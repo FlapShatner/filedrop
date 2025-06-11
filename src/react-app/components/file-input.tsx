@@ -65,11 +65,12 @@ const FileInput: React.FC = () => {
   };
 
   const baseClasses =
-    'flex flex-col  items-center justify-start p-8 border-2 border-dashed rounded-lg cursor-pointer transition-colors duration-200 ease-in-out min-h-[200px] text-center w-full max-w-xl mx-auto relative shadow-md';
+    'flex flex-col  items-center justify-start p-8 border-2 border-dashed rounded-lg cursor-pointer transition-colors duration-200 ease-in-out min-h-[200px] text-center w-full max-w-xl mx-auto relative shadow-md ';
   const idleClasses =
     'bg-accent/20 text-gray-700 border-accent hover:border-border-light';
   const draggingClasses = 'border-border-light bg-gray-100/10 ';
-  const selectedClasses = 'border-accent bg-accent/10 min-h-[100px]';
+  const selectedClasses =
+    'border-accent bg-accent/20 min-h-[100px] backdrop-blur-lg';
 
   return (
     <div
