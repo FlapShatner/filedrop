@@ -5,9 +5,11 @@ Todo:
 - style for mobile
 - show file preview on both screens
 - show option to show/hide preview
+- account for long file names
+- loading indicator for download page
 <!-- - add url picker -->
-- add clear file button on upload screen
-- use context api for state in upload mode
+<!-- - add clear file button on upload screen -->
+<!-- - use context api for state in upload mode -->
 
 Functions on Server:
 

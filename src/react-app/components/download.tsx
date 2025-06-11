@@ -20,27 +20,25 @@ function Download({ url }: { url: string }) {
         Your file is ready to download!
       </h1>
       <div className=" flex items-center justify-center gap-2 bg-accent/20 py-2 px-4 rounded-md">
-        <div className="flex items-start justify-center gap-2">
-          <div className="flex flex-col gap-2 items-center justify-center  ">
-            <div className="flex gap-2 items-center justify-center  ">
-              <p className="text-2xl font-bold ">
-                {data?.fileMeta[0].original_filename}
-              </p>
-              <p>-</p>
-              <p className=" text-white/60">
-                {formatBytes(data?.fileMeta[0].size_bytes)}
-              </p>
-            </div>
-            <p className=" flex items-center justify-center text-white/60 text-sm">
-              File will expire:
-              <span className=" font-bold ml-2">{formattedExpiresAt}</span>
+        <div className="flex flex-col gap-2 items-center justify-center  ">
+          <div className="flex gap-2 items-center justify-center  ">
+            <p className="text-2xl font-bold ">
+              {data?.fileMeta[0].original_filename}
+            </p>
+            <p>-</p>
+            <p className=" text-white/60">
+              {formatBytes(data?.fileMeta[0].size_bytes)}
             </p>
           </div>
-          <button className="bg-accent py-3 px-4 rounded-md flex items-center justify-center gap-2 ml-6 my-auto cursor-pointer">
-            <DownloadLoopIcon className="w-4 h-4 text-white" />
-            Download
-          </button>
+          <p className=" flex items-center justify-center text-white/60 text-sm">
+            File will expire:
+            <span className=" font-bold ml-2">{formattedExpiresAt}</span>
+          </p>
         </div>
+        <button className="bg-accent py-3 px-4 rounded-md flex items-center justify-center gap-2 ml-6 my-auto cursor-pointer">
+          <DownloadLoopIcon className="w-5 h-5 text-white" />
+          Download
+        </button>
       </div>
     </div>
   );
