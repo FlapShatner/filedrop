@@ -22,26 +22,20 @@ function Download({ url }: { url: string }) {
       if (!response.ok) {
         throw new Error('Failed to download file');
       }
-
-      // Convert response to blob
       const blob = await response.blob();
 
-      // Create download link
       const downloadUrl = window.URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = downloadUrl;
       link.download = data?.fileMeta[0].original_filename || 'download';
 
-      // Trigger download
       document.body.appendChild(link);
       link.click();
 
-      // Clean up
       document.body.removeChild(link);
       window.URL.revokeObjectURL(downloadUrl);
     } catch (error) {
       console.error('Download failed:', error);
-      // You might want to show an error message to the user here
     }
   };
 
@@ -50,7 +44,7 @@ function Download({ url }: { url: string }) {
       <h1 className="text-4xl font-outfit mb-4">
         Your file is ready to download!
       </h1>
-      <div className=" flex items-center justify-center gap-2 bg-accent/20 py-2 px-4 rounded-md backdrop-blur-lg">
+      <div className=" flex items-center justify-center gap-2 bg-accent/20 py-2 px-4 rounded-md backdrop-blur-lg blur-bg-2 border border-accent/60">
         <div className="flex flex-col gap-2 items-center justify-center  ">
           <div className="flex gap-2 items-center justify-center  ">
             <p className="text-2xl font-bold ">

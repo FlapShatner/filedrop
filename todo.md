@@ -22,3 +22,4 @@ Functions on Server:
 <!-- - create data object -->
 <!-- - insert data in database -->
 - handle shared file expiring
+- error feedback

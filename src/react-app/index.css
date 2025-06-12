@@ -8,7 +8,7 @@
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  --accent: #016335;
+  --accent: hsl(152, 98%, 20%);
   --bg: #07160f;
   --bg-secondary: #0b2016;
   font-synthesis: none;
@@ -71,4 +71,16 @@
       -24px 0 #fff,
       24px 0 var(--color-accent);
   }
+}
+
+.blur-bg {
+  background: hsl(152, 98%, 20%, 0.1);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+}
+
+.blur-bg-2 {
+  background: hsl(152, 98%, 20%, 0.2);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
 }
