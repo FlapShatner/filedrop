@@ -14,6 +14,37 @@ function Download({ url }: { url: string }) {
     dateStyle: 'medium',
     timeStyle: 'short',
   }).format(expiresAt);
+
+  const handleDownload = async () => {
+    try {
+      const response = await fetch(`/api/file/${url}`);
+
+      if (!response.ok) {
+        throw new Error('Failed to download file');
+      }
+
+      // Convert response to blob
+      const blob = await response.blob();
+
+      // Create download link
+      const downloadUrl = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = downloadUrl;
+      link.download = data?.fileMeta[0].original_filename || 'download';
+
+      // Trigger download
+      document.body.appendChild(link);
+      link.click();
+
+      // Clean up
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(downloadUrl);
+    } catch (error) {
+      console.error('Download failed:', error);
+      // You might want to show an error message to the user here
+    }
+  };
+
   return (
     <div className="font-outfit h-screen max-w-4xl mx-auto flex flex-col items-center justify-center p-4 pt-8 -translate-y-1/8">
       <h1 className="text-4xl font-outfit mb-4">
@@ -35,7 +66,10 @@ function Download({ url }: { url: string }) {
             <span className=" font-bold ml-2">{formattedExpiresAt}</span>
           </p>
         </div>
-        <button className="bg-accent py-3 px-4 rounded-md flex items-center justify-center gap-2 ml-6 my-auto cursor-pointer">
+        <button
+          onClick={handleDownload}
+          className="bg-accent py-3 px-4 rounded-md flex items-center justify-center gap-2 ml-6 my-auto cursor-pointer"
+        >
           <DownloadLoopIcon className="w-5 h-5 text-white" />
           Download
         </button>

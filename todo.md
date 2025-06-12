@@ -1,5 +1,6 @@
 Todo:
 
+- new way to generate unique ids
 - option for delete after download
 - scroll down for information
 - style for mobile

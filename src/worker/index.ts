@@ -64,10 +64,11 @@ app.post('/api/upload', async (c) => {
 app.get('/api/download/:url', async (c) => {
   const { url } = c.req.param();
   try {
-    const file = await c.env.filedrop.get(url);
-    if (!file) {
-      return c.json({ message: 'File not found' }, 404);
-    }
+    // const file = await c.env.filedrop.get(url);
+    // console.log('file', file);
+    // if (!file) {
+    //   return c.json({ message: 'File not found' }, 404);
+    // }
     const db = drizzle(c.env.DB);
     const fileMeta = await db
       .select()
@@ -76,7 +77,52 @@ app.get('/api/download/:url', async (c) => {
     if (!fileMeta) {
       return c.json({ message: 'File not found' }, 404);
     }
-    return c.json({ file, fileMeta });
+    return c.json({ fileMeta });
+  } catch (error) {
+    return c.json({ message: 'File download failed', error: error }, 500);
+  }
+});
+
+app.get('/api/file/:url', async (c) => {
+  const { url } = c.req.param();
+  try {
+    const file = await c.env.filedrop.get(url);
+    if (!file) {
+      return c.json({ message: 'File not found' }, 404);
+    }
+
+    const db = drizzle(c.env.DB);
+    const fileMeta = await db
+      .select()
+      .from(expiring_files)
+      .where(eq(expiring_files.id, url));
+
+    if (!fileMeta || fileMeta.length === 0) {
+      return c.json({ message: 'File not found' }, 404);
+    }
+
+    const metadata = fileMeta[0];
+
+    // Check if file has expired
+    if (metadata.expires_at && Date.now() > metadata.expires_at) {
+      return c.json({ message: 'File has expired' }, 410);
+    }
+
+    // Set headers for file download
+    c.header(
+      'Content-Type',
+      metadata.content_type || 'application/octet-stream'
+    );
+    c.header(
+      'Content-Disposition',
+      `attachment; filename="${metadata.original_filename}"`
+    );
+    c.header('Content-Length', metadata.size_bytes.toString());
+    c.header('Cache-Control', 'no-cache');
+
+    return new Response(file.body, {
+      headers: c.res.headers,
+    });
   } catch (error) {
     return c.json({ message: 'File download failed', error: error }, 500);
   }
