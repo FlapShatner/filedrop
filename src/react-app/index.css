@@ -9,6 +9,7 @@
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
   --accent: hsl(152, 98%, 20%);
+  --accent-hover: hsl(152, 98%, 25%);
   --bg: #07160f;
   --bg-secondary: #0b2016;
   font-synthesis: none;
@@ -35,6 +36,7 @@
   --color-border: #3a3a3a;
   --color-border-light: #e0e0e0;
   --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
 }
 
 .loading-spinner {

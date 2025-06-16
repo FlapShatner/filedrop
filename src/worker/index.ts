@@ -4,7 +4,7 @@ import { prettyJSON } from 'hono/pretty-json';
 import { newUsername } from './username';
 import { drizzle } from 'drizzle-orm/d1';
 import { expiring_files } from './db/schema';
-import { eq } from 'drizzle-orm';
+import { eq, lt } from 'drizzle-orm';
 
 export type DBType = D1Database;
 type Env = {
@@ -128,4 +128,50 @@ app.get('/api/file/:url', async (c) => {
   }
 });
 
-export default app;
+export default {
+  fetch: app.fetch,
+  async scheduled(
+    controller: ScheduledController,
+    env: Env,
+    ctx: ExecutionContext
+  ): Promise<void> {
+    ctx.waitUntil(handleScheduled(env));
+  },
+};
+
+async function handleScheduled(env: Env) {
+  console.log('Cron job started: searching for expired files...');
+  const db = drizzle(env.DB);
+  try {
+    const expiredFiles = await db
+      .select()
+      .from(expiring_files)
+      .where(lt(expiring_files.expires_at, Date.now()));
+
+    if (expiredFiles.length === 0) {
+      console.log('No expired files found.');
+      return;
+    }
+
+    console.log(`Found ${expiredFiles.length} expired files. Deleting...`);
+
+    for (const file of expiredFiles) {
+      try {
+        console.log(`Deleting file from R2: ${file.r2_object_key}`);
+        await env.filedrop.delete(file.r2_object_key);
+        console.log(`Successfully deleted from R2. Now deleting from DB.`);
+
+        await db.delete(expiring_files).where(eq(expiring_files.id, file.id));
+        console.log(`Successfully deleted from DB: ${file.id}`);
+      } catch (err) {
+        console.error(
+          `Failed to delete file ${file.id} (R2 key: ${file.r2_object_key}):`,
+          err
+        );
+      }
+    }
+    console.log('Cron job finished.');
+  } catch (error) {
+    console.error('Error in scheduled task:', error);
+  }
+}

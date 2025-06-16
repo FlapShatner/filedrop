@@ -65,9 +65,9 @@ const FileInput: React.FC = () => {
   };
 
   const baseClasses =
-    'flex flex-col  items-center justify-start p-8 border-2 border-dashed rounded-lg cursor-pointer transition-colors duration-200 ease-in-out min-h-[200px] text-center w-full max-w-xl mx-auto relative shadow-md ';
+    'flex flex-col  items-center justify-start p-8 border-2 border-dashed rounded-lg cursor-pointer transition-colors duration-200 ease-in-out min-h-[200px] text-center w-full max-w-xl mx-auto relative ';
   const idleClasses =
-    ' text-gray-700 border-accent hover:border-border-light blur-bg';
+    'group text-gray-700 border-accent hover:border-accent-hover blur-bg shadow-md';
   const draggingClasses = 'border-border bg-gray-100/10 ';
   const selectedClasses = 'border-accent  min-h-[100px] blur-bg-2';
 
@@ -95,7 +95,7 @@ const FileInput: React.FC = () => {
       <ClearFile />
       {file ?
         <div className="text-sm text-text my-auto ">
-          <p className="my-1">
+          <p className="my-1 text-wrap max-w-sm break-words">
             {isLoading ? 'Uploading file:' : 'Selected file:'} {file.name}
           </p>
           <p className="my-1">Type: {file.type}</p>
@@ -109,7 +109,7 @@ const FileInput: React.FC = () => {
         >
           <UploadLoopIcon className="w-16 h-16 mb-4 text-text" />
           <p>Choose a file or drag & drop it here</p>
-          <button className="bg-accent/80  px-2 py-1 rounded-md mt-4 flex items-center text-sm text-text ">
+          <button className="bg-accent/80  px-2 py-1 rounded-md mt-4 flex items-center text-sm text-text group-hover:bg-accent-hover transition-colors duration-200 ease-in-out">
             <span className="mr-2 text-sm font-semibold">Browse</span>
             <FolderIcon className="w-4 h-4" />
           </button>

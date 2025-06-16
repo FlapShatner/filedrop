@@ -29,7 +29,10 @@
       "database_id": "1633ff97-57dd-42bb-9649-63d48314b6e1",
       "migrations_dir": "drizzle/migrations"
     }
-  ]
+  ],
+  "triggers": {
+    "crons": ["0 * * * *"]
+  }
   /**
    * Smart Placement
    * Docs: https://developers.cloudflare.com/workers/configuration/smart-placement/#smart-placement

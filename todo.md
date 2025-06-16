@@ -3,10 +3,10 @@ Todo:
 - new way to generate unique ids
 - option for delete after download
 - scroll down for information
-- style for mobile
+<!-- - style for mobile -->
 - show file preview on both screens
 - show option to show/hide preview
-- account for long file names
+<!-- - account for long file names -->
 - loading indicator for download page
 <!-- - add url picker -->
 <!-- - add clear file button on upload screen -->
