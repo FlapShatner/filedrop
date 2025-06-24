@@ -131,7 +131,7 @@ app.get('/api/file/:url', async (c) => {
 export default {
   fetch: app.fetch,
   async scheduled(
-    controller: ScheduledController,
+    _controller: ScheduledController,
     env: Env,
     ctx: ExecutionContext
   ): Promise<void> {
