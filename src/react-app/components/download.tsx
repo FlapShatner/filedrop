@@ -1,15 +1,21 @@
-import { useQuery } from '@tanstack/react-query';
+// import { useQuery } from '@tanstack/react-query';
 import { formatBytes } from '../../lib/utils';
+import { InsertResult } from '../../types';
 import { DownloadLoopIcon } from './icons/download-loop-icon';
 import ShareNew from './share-new';
 
-function Download({ url }: { url: string }) {
-  const { data, error } = useQuery({
-    queryKey: ['download', url],
-    queryFn: () => fetch(`/api/download/${url}`).then((res) => res.json()),
-  });
-  console.log(data);
-  console.log(error);
+type DataType = {
+  fileMeta: InsertResult[];
+};
+
+function Download({
+  url,
+  data,
+}: {
+  url: string;
+  data: DataType;
+  error: Error | null;
+}) {
   const expiresAt = data?.fileMeta[0].expires_at;
   const formattedExpiresAt = new Intl.DateTimeFormat('en-US', {
     dateStyle: 'medium',
@@ -21,8 +27,17 @@ function Download({ url }: { url: string }) {
       const response = await fetch(`/api/file/${url}`);
 
       if (!response.ok) {
-        throw new Error('Failed to download file');
+        if (response.status === 404) {
+          throw new Error('File not found or has expired');
+        } else if (response.status === 403) {
+          throw new Error('Access denied to this file');
+        } else {
+          throw new Error(
+            `Download failed: ${response.status} ${response.statusText}`
+          );
+        }
       }
+
       const blob = await response.blob();
 
       const downloadUrl = window.URL.createObjectURL(blob);
@@ -37,6 +52,13 @@ function Download({ url }: { url: string }) {
       window.URL.revokeObjectURL(downloadUrl);
     } catch (error) {
       console.error('Download failed:', error);
+
+      // Show user-friendly error message
+      if (error instanceof Error) {
+        alert(`Download failed: ${error.message}`);
+      } else {
+        alert('Download failed due to an unexpected error');
+      }
     }
   };
 

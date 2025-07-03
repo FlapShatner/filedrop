@@ -9,6 +9,7 @@ export interface FileContextType {
   error: string | null;
   setFile: (file: File | null) => void;
   setExpireIn: (expireIn: number) => void;
+  setError: (error: string | null) => void;
   handleFileSelected: (file: File) => void;
   handleShare: () => Promise<ShareResult | null>;
   handleClearFile: () => void;

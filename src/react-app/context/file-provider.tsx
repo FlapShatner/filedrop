@@ -18,7 +18,10 @@ export const FileProvider = ({ children }: FileProviderProps) => {
 
   const handleShare = async (): Promise<ShareResult | null> => {
     if (!file) return null;
+
     setIsLoading(true);
+    setError(null); // Clear any previous errors
+
     const formData = new FormData();
     formData.append('file', file);
     formData.append('expireIn', expireIn.toString());
@@ -29,23 +32,51 @@ export const FileProvider = ({ children }: FileProviderProps) => {
         body: formData,
       });
 
+      if (!response.ok) {
+        throw new Error(
+          `Upload failed: ${response.status} ${response.statusText}`
+        );
+      }
+
       const data = await response.json();
-      console.log(data);
-      if (data.result.success) {
+
+      if (data.result?.success) {
         setFile(null);
         setExpireIn(1);
         setResult(data.result);
         setIsLoading(false);
+        setError(null);
         return data.result;
       } else {
-        console.error(data.message);
+        const errorMessage = data.message || 'Upload failed for unknown reason';
+        console.error('Upload failed:', errorMessage);
+        setError(errorMessage);
         setIsLoading(false);
         return null;
       }
     } catch (error) {
-      console.error(error);
+      console.error('Upload error:', error);
       setIsLoading(false);
-      setError('An error occurred while sharing the file');
+
+      // Provide user-friendly error messages
+      if (error instanceof Error) {
+        if (error.message.includes('413')) {
+          setError('File is too large. Please choose a smaller file.');
+        } else if (error.message.includes('415')) {
+          setError('File type is not supported.');
+        } else if (
+          error.message.includes('network') ||
+          error.message.includes('fetch')
+        ) {
+          setError(
+            'Network error. Please check your connection and try again.'
+          );
+        } else {
+          setError(`Upload failed: ${error.message}`);
+        }
+      } else {
+        setError('An unexpected error occurred while uploading the file');
+      }
       return null;
     }
   };
@@ -63,6 +94,7 @@ export const FileProvider = ({ children }: FileProviderProps) => {
     error,
     setFile,
     setExpireIn,
+    setError,
     handleFileSelected,
     handleShare,
     handleClearFile,
